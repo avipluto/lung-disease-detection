@@ -66,15 +66,8 @@ async def startup_event():
         logger.warning("The API will start but predictions will fail until the model is loaded.")
 
 
-@app.get("/", tags=["Root"])
-async def root():
-    """Root endpoint with API information."""
-    return {
-        "message": "Welcome to LungScan AI - Lung Disease Detection API",
-        "version": "1.0.0",
-        "docs": "/docs",
-        "health": "/api/health"
-    }
+
+
 
 
 @app.get("/api/health", response_model=HealthResponse, tags=["Health"])
@@ -176,3 +169,23 @@ async def global_exception_handler(request, exc):
         status_code=500,
         content={"detail": "An internal server error occurred. Please try again."}
     )
+
+
+# Serve frontend static files if present, otherwise fallback to API info
+FRONTEND_DIR = Path("frontend")
+if not FRONTEND_DIR.exists():
+    FRONTEND_DIR = Path("../frontend")
+
+if FRONTEND_DIR.exists() and (FRONTEND_DIR / "index.html").exists():
+    logger.info(f"Serving frontend from {FRONTEND_DIR.resolve()}")
+    app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
+else:
+    @app.get("/", tags=["Root"])
+    async def root():
+        return {
+            "message": "Welcome to LungScan AI - Lung Disease Detection API",
+            "version": "1.0.0",
+            "docs": "/docs",
+            "health": "/api/health"
+        }
+
