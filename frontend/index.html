@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LungScan AI - Lung Disease Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-lungs"></i>
+                    <h1>LungScan <span class="highlight">AI</span></h1>
+                </div>
+                <nav class="nav">
+                    <a href="#upload" class="nav-link">Analyze</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">Intelligent Lung Disease Detection</h2>
+                <p class="hero-subtitle">Upload a chest X-ray image and our AI model will analyze it for 14 different thoracic diseases using state-of-the-art deep learning.</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">14</span>
+                        <span class="stat-label">Disease Classes</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">DenseNet121</span>
+                        <span class="stat-label">Architecture</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">224×224</span>
+                        <span class="stat-label">Input Resolution</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload Section -->
+    <section class="upload-section" id="upload">
+        <div class="container">
+            <div class="upload-card">
+                <h3 class="section-title"><i class="fas fa-cloud-upload-alt"></i> Upload Chest X-Ray</h3>
+                <div class="dropzone" id="dropzone">
+                    <div class="dropzone-content">
+                        <i class="fas fa-x-ray dropzone-icon"></i>
+                        <p class="dropzone-text">Drag & drop your chest X-ray image here</p>
+                        <p class="dropzone-subtext">or click to browse files</p>
+                        <p class="dropzone-info">Supports: JPG, PNG, BMP, TIFF, WebP (Max 10MB)</p>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+
+                <!-- Image Preview -->
+                <div class="preview-container" id="previewContainer" style="display: none;">
+                    <div class="preview-wrapper">
+                        <img id="previewImage" alt="X-ray preview">
+                        <button class="remove-btn" id="removeBtn" title="Remove image">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="preview-info">
+                        <p id="fileName" class="file-name"></p>
+                        <p id="fileSize" class="file-size"></p>
+                    </div>
+                    <button class="analyze-btn" id="analyzeBtn">
+                        <i class="fas fa-microscope"></i> Analyze X-Ray
+                    </button>
+                </div>
+
+                <!-- Loading -->
+                <div class="loading-container" id="loadingContainer" style="display: none;">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                    </div>
+                    <p class="loading-text">Analyzing your X-ray image...</p>
+                    <p class="loading-subtext">Our AI model is processing the image through DenseNet121</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section" id="results" style="display: none;">
+        <div class="container">
+            <div class="results-card">
+                <h3 class="section-title"><i class="fas fa-chart-bar"></i> Analysis Results</h3>
+                <p class="results-filename" id="resultsFilename"></p>
+                <div class="predictions" id="predictionsContainer"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Error Section -->
+    <div class="error-container" id="errorContainer" style="display: none;">
+        <div class="container">
+            <div class="error-card">
+                <i class="fas fa-exclamation-triangle error-icon"></i>
+                <p class="error-message" id="errorMessage"></p>
+                <button class="retry-btn" id="retryBtn">
+                    <i class="fas fa-redo"></i> Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <h3 class="section-title center"><i class="fas fa-info-circle"></i> About the Model</h3>
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="about-icon"><i class="fas fa-brain"></i></div>
+                    <h4>DenseNet121 Architecture</h4>
+                    <p>Our model uses DenseNet121, a deep convolutional neural network known for its dense connectivity pattern, enabling maximum information flow between layers.</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon"><i class="fas fa-database"></i></div>
+                    <h4>CheXNet Inspired</h4>
+                    <p>Based on the CheXNet research paper, our model is designed to detect 14 thoracic diseases from chest X-ray images with radiologist-level accuracy.</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon"><i class="fas fa-list-check"></i></div>
+                    <h4>14 Disease Classes</h4>
+                    <p>Detects Atelectasis, Cardiomegaly, Effusion, Infiltration, Mass, Nodule, Pneumonia, Pneumothorax, Consolidation, Edema, Emphysema, Fibrosis, Pleural Thickening, and Hernia.</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon"><i class="fas fa-shield-halved"></i></div>
+                    <h4>Privacy First</h4>
+                    <p>All images are processed locally on the server. No data is sent to third-party services. Your medical images remain private and secure.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-lungs"></i>
+                    <span>LungScan AI</span>
+                </div>
+                <div class="footer-disclaimer">
+                    <p><i class="fas fa-exclamation-circle"></i> <strong>Medical Disclaimer:</strong> This tool is for educational and research purposes only. It is NOT a substitute for professional medical diagnosis. Always consult a qualified healthcare provider for medical advice.</p>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2024 LungScan AI. Built with <i class="fas fa-heart" style="color: #ef4444;"></i> using PyTorch & FastAPI</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

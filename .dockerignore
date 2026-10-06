@@ -1,0 +1,17 @@
+**/.git
+**/.gitignore
+**/.vscode
+**/.idea
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache
+**/node_modules
+**/venv
+**/.env
+README.md
+LICENSE
+docker-compose.yml
+data/
+backend/models/*.pth
