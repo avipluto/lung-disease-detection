@@ -3,13 +3,11 @@
  * Handles file upload, API communication, and results rendering
  */
 
-// ============ Configuration ============
-const API_BASE_URL = window.location.port === '' || window.location.port === '80' || window.location.port === '3000'
-    ? `${window.location.protocol}//${window.location.hostname}:${window.location.port || 80}`
-    : `${window.location.protocol}//${window.location.hostname}:8000`;
+// Auto-detect API URL for local standalone vs reverse proxy (Docker)
+const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
+    ? 'http://localhost:8000/api'
+    : '/api';
 
-// For docker-compose: nginx proxies /api to backend
-const API_URL = '/api';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/bmp', 'image/tiff', 'image/webp'];
